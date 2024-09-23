@@ -25,10 +25,12 @@ public class RandomInput<T> implements InputManager<T> {
             String species = randomString();
             String eyeColor = randomString();
             boolean wool = random.nextBoolean();
+            double weight = random.nextInt(1, 1000);
             arrayList.add(new Animal.Builder()
                     .setSpecies(species)
                     .setEyeColor(eyeColor)
                     .setWool(wool)
+                    .setWeight(weight)
                     .build());
         }
         return (ArrayList<T>) arrayList;
@@ -39,7 +41,7 @@ public class RandomInput<T> implements InputManager<T> {
         for (int i = 0; i < length; i++) {
             String material = randomString();
             String storedMaterial = randomString();
-            double volume = random.nextInt(10,100);
+            double volume = random.nextInt(1,100);
             arrayList.add(new Barrel.Builder()
                     .setVolume(volume)
                     .setMaterial(material)
@@ -54,7 +56,7 @@ public class RandomInput<T> implements InputManager<T> {
         for (int i = 0; i < length; i++) {
             String surname = randomString();
             String gender = random.nextDouble() < 0.5 ? "М" : "Ж";
-            int age = random.nextInt(0,125);
+            int age = random.nextInt(1,125);
             arrayList.add(new Person.Builder()
                     .setAge(age)
                     .setGender(gender)

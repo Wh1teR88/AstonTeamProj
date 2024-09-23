@@ -6,17 +6,20 @@ public class Animal implements Comparable<Animal> {
     private final String species; // или type, вроде переводит "вид животного -> animal species"
     private final String eyeColor;
     private final boolean wool;
+    private final double weight;
 
     private Animal(Builder builder) {
         this.species = builder.species;
         this.eyeColor = builder.eyeColor;
         this.wool = builder.wool;
+        this.weight = builder.weight;
     }
 
     public static class Builder {
         private String species;
         private String eyeColor;
         private boolean wool;
+        private double weight;
 
         public Builder setSpecies(String species) {
             if (!Validate.validateString(species)) {
@@ -39,6 +42,14 @@ public class Animal implements Comparable<Animal> {
             return this;
         }
 
+        public Builder setWeight(double weight) {
+            if(!Validate.validatePositiveDouble(weight)) {
+                throw new IllegalArgumentException("Вес меньше нуля");
+            }
+            this.weight = weight;
+            return this;
+        }
+
         public Animal build() {
             return new Animal(this);
         }
@@ -57,6 +68,10 @@ public class Animal implements Comparable<Animal> {
         return wool;
     }
 
+    public double getWeight() {
+        return weight;
+    }
+
     @Override
     public int compareTo(Animal other) {
         return this.species.compareTo(other.species);
@@ -68,6 +83,7 @@ public class Animal implements Comparable<Animal> {
                 "species='" + species + '\'' +
                 ", eyeColor='" + eyeColor + '\'' +
                 ", hasFur=" + wool +
+                ", weight=" + weight +
                 '}';
     }
 }
