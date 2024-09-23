@@ -3,7 +3,6 @@ package Sorting;
 import java.util.List;
 
 public class InsertionSortStrategy<T extends Comparable<T>> implements SortStrategy<T> {
-    // https://stackoverflow.com/questions/64507683/how-do-i-implement-an-insertion-sort-method-for-a-generic-arraylist
     @Override
     public void sort(List<T> list) {
         for (int i = 1; i < list.size(); i++) {

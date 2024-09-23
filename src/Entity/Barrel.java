@@ -2,6 +2,8 @@ package Entity;
 
 import Validating.Validate;
 
+import java.util.Comparator;
+
 public class Barrel implements Comparable<Barrel> {
     private final double volume;
     private final String storedMaterial;
@@ -61,15 +63,17 @@ public class Barrel implements Comparable<Barrel> {
 
     @Override
     public int compareTo(Barrel other) {
-        return Double.compare(this.volume, other.volume);
+        return Comparator.comparing((Barrel b) -> b.volume)
+                .thenComparing(b -> b.storedMaterial)
+                .thenComparing(b -> b.material)
+                .compare(this, other);
     }
 
     @Override
     public String toString() {
-        return "Barrel{" +
-                "volume=" + volume +
-                ", storedMaterial='" + storedMaterial + '\'' +
-                ", material='" + material + '\'' +
-                '}';
+        return "Бочка " +
+                "объемом " + volume +
+                " л., из материала \"" + material +
+                "\", внутри " + storedMaterial;
     }
 }

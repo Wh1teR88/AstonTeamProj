@@ -1,201 +1,201 @@
-import Entity.Animal;
-import Entity.Barrel;
-import Entity.Person;
-import Searching.BinarySearch;
-import Sorting.Patterns.Strategy.SortingPlan;
 import ArrayCreation.*;
+import Entity.*;
+import Sorting.InsertionSortStrategy;
+import Sorting.Patterns.Strategy.SortingPlan;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class Application         {
+public class Application {
     private static final Scanner scanner = new Scanner(System.in);
 
+    static ObjectType workObject;
+    static List<? extends Comparable<?>> workList;
+    static SortingPlan<? extends Comparable<?>> sortingPlan;
+
     public static void main(String[] args) {
-        boolean terminate = false;
 
-        while (!terminate) {
-            System.out.println("\nВыберите действие:");
-            System.out.println("1. Работа с Animal");
-            System.out.println("2. Работа с Barrel");
-            System.out.println("3. Работа с Person");
-            System.out.println("4. Выход");
+        System.out.println("Приветствуем вас в программе для сортировки!");
+        System.out.println("============================================");
 
-            int choice = Integer.parseInt(scanner.nextLine());
+        while (true) {
+            workObject = selectObjectToWork();
+            workList = chooseArrayCreator(workObject);
+            System.out.println("\nИсходный список " + workObject.toString());
+            printList(workList);
+            sortingPlan = chooseSortingPlan();
+            sortObjects();
+            System.out.println("\nОтсортированный список " + workObject.toString());
+            printList(workList);
+        }
+    }
 
-            switch (choice) {
+    private static ObjectType selectObjectToWork() {
+        boolean selected = false;
+        ObjectType workObject = null;
+        while (!selected) {
+            System.out.println("\nС чем нужно работать?");
+            System.out.println("1. С животными.");
+            System.out.println("2. С бочками.");
+            System.out.println("3. С людьми.");
+            System.out.println("4. Выход.");
+
+            int userChoice = scanner.nextInt();
+
+            switch (userChoice) {
                 case 1:
-                    selectedAnimals();
+                    workObject = ObjectType.ANIMAL;
+                    selected = true;
                     break;
                 case 2:
-                    selectedBarrels();
+                    workObject = ObjectType.BARREL;
+                    selected = true;
                     break;
                 case 3:
-                    selectedPersons();
+                    workObject = ObjectType.PERSON;
+                    selected = true;
                     break;
                 case 4:
-                    terminate = true;
-                    System.out.println("Выход.");
+                    selected = true;
+                    stopProgram();
                     break;
                 default:
                     System.out.println("Ошибка ввода, попробуйте еще раз.");
             }
         }
+        return workObject;
     }
 
-    private static void selectedAnimals() {
-        List<Animal> animals = chooseDataInputOption(ObjectType.ANIMAL);
-        if (animals == null) {
-            return;
+    private static void sortObjects() {
+        //TODO разобраться насколько критичная ошибка, по факту мы чекаем по workObject и свитчим соответствующий каст (вероятно костыль)
+        switch (workObject) {
+            case ANIMAL:
+                sortAnimals((List<Animal>) workList, (SortingPlan<Animal>) sortingPlan);
+                break;
+            case BARREL:
+                sortBarrels((List<Barrel>)workList, (SortingPlan<Barrel>) sortingPlan);
+                break;
+            case PERSON:
+                sortPersons((List<Person>) workList, (SortingPlan<Person>) sortingPlan);
+                break;
         }
+    }
 
-        System.out.println("Неотсортированный список Animals:");
-        printList(animals);
+    private static void sortAnimals(List<Animal> animals, SortingPlan<Animal> sortingPlan) {
 
-        SortingPlan<Animal> sortingPlan = chooseSortStrategyOption();
         if (sortingPlan != null) {
             sortingPlan.sort(animals);
-        }
-
-        System.out.println("Отсортированный список Animals:");
-        printList(animals);
-
-        System.out.print("Введите вид животного: ");
-        String species = scanner.nextLine();
-        Animal key = new Animal.Builder()
-                .setSpecies(species)
-                .setEyeColor("")
-                .setWool(false)
-                .build();
-
-        BinarySearch<Animal> binarySearch = new BinarySearch<>();
-        int index = binarySearch.search(animals, key);
-
-        if (index != -1) {
-            System.out.println("Найдено: " + animals.get(index));
         } else {
-            System.out.println("Ничего не найдено.");
+            stopProgram();
         }
     }
 
-    private static void selectedBarrels() {
-        List<Barrel> barrels = chooseDataInputOption(ObjectType.BARREL);
-        if (barrels == null) {
-            return;
-        }
-
-        System.out.println("Нетсортированный список Barrels:");
-        printList(barrels);
-
-        SortingPlan<Barrel> sortingPlan = chooseSortStrategyOption();
+    private static void sortBarrels(List<Barrel> barrels, SortingPlan<Barrel> sortingPlan) {
         if (sortingPlan != null) {
-            sortingPlan.sort(barrels); // нужно убрать эти проверки на нулл и пробросить их через validate
-        }
-
-        System.out.println("Отсортированный список Barrels:");
-        printList(barrels);
-
-        // Бинарный поиск
-        System.out.print("Введите объем бочки: ");
-        double volume = Double.parseDouble(scanner.nextLine());
-        Barrel key = new Barrel.Builder()
-                .setVolume(volume)
-                .setStoredMaterial("")
-                .setMaterial("")
-                .build();
-
-        BinarySearch<Barrel> binarySearch = new BinarySearch<>();
-        int index = binarySearch.search(barrels, key);
-
-        if (index != -1) {
-            System.out.println("Найдено: " + barrels.get(index));
+            sortingPlan.sort(barrels);
         } else {
-            System.out.println("Ничего не найдено.");
+            stopProgram();
         }
     }
 
-    private static void selectedPersons() {
-        List<Person> persons = chooseDataInputOption(ObjectType.PERSON);
-        if (persons == null)  {
-            return;
-        }
-
-        System.out.println("Нетсортированный список Persons:");
-        printList(persons);
-
-        SortingPlan<Person> sortingPlan = chooseSortStrategyOption();
+    private static void sortPersons(List<Person> persons, SortingPlan<Person> sortingPlan) {
         if (sortingPlan != null) {
             sortingPlan.sort(persons);
-        }
-
-        System.out.println("Отсортированный список Persons:");
-        printList(persons);
-
-        // Бинарный поиск
-        System.out.print("Введите фамилию: ");
-        String surname = scanner.nextLine();
-        Person key = new Person.Builder()
-                .setGender("")
-                .setAge(0)
-                .setSurname(surname)
-                .build();
-
-        BinarySearch<Person> binarySearch = new BinarySearch<>();
-        int index = binarySearch.search(persons, key);
-
-        if (index != -1) {
-            System.out.println("Найдено: " + persons.get(index));
         } else {
-            System.out.println("Не найдено.");
+            stopProgram();
         }
     }
 
-    //не сделано
-    private static <T> List<T> chooseDataInputOption(ObjectType objectType) {
-        // через этот метод нужно заполнять List и потом его как-то обрабатывать
-        System.out.println("Выберите способ ввода данных:\n");
-        System.out.println("1. Ввести самостоятельно.");
-        System.out.println("2. Из файла");
-        System.out.println("3. Случайная генерация.");
-        System.out.println("4. Выйти.");
+    private static <T> ArrayList<T> chooseArrayCreator(ObjectType objectType) {
 
-        int userChoice = Integer.parseInt(scanner.nextLine());
-        int arrayLength;
-        switch (userChoice) {
-            case 1:
-                System.out.println("Введите размер массива");
-                arrayLength = Integer.parseInt(scanner.nextLine());
-                return new ArrayCreationContext<>(new ManualInput<T>(), objectType, arrayLength).createArray();
-            case 2:
-                return new ArrayCreationContext<>(new FileInput<T>(), objectType).createArray();
-            case 3:
-                System.out.println("Введите размер массива");
-                arrayLength = Integer.parseInt(scanner.nextLine());
-                return new ArrayCreationContext<>(new RandomInput<T>(), objectType, arrayLength).createArray();
-            case 4:
-                System.out.println("Выход.");
-                break;
-            default:
-                System.out.println("Ошибка ввода, попробуйте еще раз.");
+        int arrayLength = 1;
+        boolean sizeCorrect = false;
+        while (!sizeCorrect) {
+            System.out.println("\nВведите размер списка (1 - 100):");
+            int userInput = scanner.nextInt();
+            if (userInput < 1 || userInput > 100) {
+                System.out.println("Неверный размер списка, попробуйте снова.");
+            }
+            else {
+                arrayLength = userInput;
+                sizeCorrect = true;
+            }
         }
+        ArrayCreator<T> arrayCreator = new ArrayCreator<>(objectType, arrayLength);
 
-        return null; // не сделано
+        boolean selected = false;
+        while (!selected) {
+            System.out.println("Выберите способ ввода данных:\n");
+            System.out.println("1. Ввести самостоятельно.");
+            System.out.println("2. Из файла.");
+            System.out.println("3. Случайная генерация.");
+            System.out.println("4. Выход.");
+
+            int userChoice = scanner.nextInt();
+
+            switch (userChoice) {
+                case 1:
+                    arrayCreator.setInputManager(new ManualInput<>());
+                    selected = true;
+                    break;
+                case 2:
+                    arrayCreator.setInputManager(new FileInput<>());
+                    selected = true;
+                    break;
+                case 3:
+                    arrayCreator.setInputManager(new RandomInput<>());
+                    selected = true;
+                    break;
+                case 4:
+                    stopProgram();
+                    break;
+                default:
+                    System.out.println("Ошибка ввода, попробуйте еще раз.");
+            }
+        }
+        return arrayCreator.createArray();
     }
 
-    // не сделано
-    private static <T extends Comparable<T>> SortingPlan<T> chooseSortStrategyOption() {
-        System.out.println("Выберите стратегию сортировки:");
-        System.out.println("1. Insertion sort");
-        System.out.println("2. Custom sort");
+    private static <T extends Comparable<T>> SortingPlan<T> chooseSortingPlan() {
 
-        int userChoice = Integer.parseInt(scanner.nextLine());
+        SortingPlan<T> sortingPlan = new SortingPlan<>();
+        boolean selected = false;
 
-        return null; // не сделаон
+        while (!selected) {
+            System.out.println("\nВыберите стратегию сортировки:");
+            System.out.println("1. Insertion sort");
+            System.out.println("2. Custom sort");
+            System.out.println("3. Выход");
+            int userChoice = scanner.nextInt();
+
+            switch (userChoice) {
+                case 1:
+                    selected = true;
+                    sortingPlan.setStrategy(new InsertionSortStrategy<>());
+                    break;
+                case 2:
+                    //TODO см. дополнительное задание
+                    //selected = true;
+                    //sortingPlan.setStrategy(new CustomSortStrategy<>());
+                    break;
+                case 3:
+                    return null;
+                default:
+                    System.out.println("Ошибка ввода, попробуйте ещё раз.");
+            }
+        }
+        return sortingPlan;
     }
 
     private static <T> void printList(List<T> list) {
         for (T element : list) {
             System.out.println(element);
         }
+    }
+
+    private static void stopProgram() {
+        System.out.println("Программа завершает работу...");
+        System.exit(0);
     }
 }

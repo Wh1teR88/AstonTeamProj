@@ -2,6 +2,8 @@ package Entity;
 
 import Validating.Validate;
 
+import java.util.Comparator;
+
 public class Animal implements Comparable<Animal> {
     private final String species; // или type, вроде переводит "вид животного -> animal species"
     private final String eyeColor;
@@ -74,16 +76,18 @@ public class Animal implements Comparable<Animal> {
 
     @Override
     public int compareTo(Animal other) {
-        return this.species.compareTo(other.species);
+        return Comparator.comparing((Animal a) -> a.species)
+                .thenComparing(a -> a.eyeColor)
+                .thenComparing(a -> a.wool)
+                .thenComparing(a -> a.weight)
+                .compare(this, other);
     }
 
     @Override
     public String toString() {
-        return "Animal{" +
-                "species='" + species + '\'' +
-                ", eyeColor='" + eyeColor + '\'' +
-                ", hasFur=" + wool +
-                ", weight=" + weight +
-                '}';
+        return "Животное: вид \"" + species
+                + "\", цвет глаз \"" + eyeColor + "\", "
+                + (wool ? "есть мех" : "без меха") +
+                ", вес " + weight + " кг.";
     }
 }

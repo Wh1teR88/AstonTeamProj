@@ -2,6 +2,8 @@ package Entity;
 
 import Validating.Validate;
 
+import java.util.Comparator;
+
 public final class Person implements Comparable<Person> {
     private final String gender;
     private final int age;
@@ -61,16 +63,18 @@ public final class Person implements Comparable<Person> {
 
     @Override
     public int compareTo(Person other) {
-        return this.surname.compareTo(other.surname);
+        return Comparator.comparing((Person p) -> p.surname)
+                .thenComparing(p -> p.age)
+                .thenComparing(p -> p.gender)
+                .compare(this, other);
     }
 
     @Override
     public String toString() {
-        return "Person{" +
-                "gender='" + gender + '\'' +
-                ", age=" + age +
-                ", surname='" + surname + '\'' +
-                '}';
+        return "Человек по фамилии "
+                + surname + ", "
+                + age + " лет, "
+                + (gender.equals("М") ? "мужчина" : "женщина");
     }
 }
 
