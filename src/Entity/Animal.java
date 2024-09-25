@@ -74,6 +74,10 @@ public class Animal implements Comparable<Animal> {
         return weight;
     }
 
+    public double getWeight() {
+        return weight;
+    }
+
     @Override
     public int compareTo(Animal other) {
         return Comparator.comparing((Animal a) -> a.species)

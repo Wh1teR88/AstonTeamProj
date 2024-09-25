@@ -61,6 +61,10 @@ public final class Person implements Comparable<Person> {
         return surname;
     }
 
+    public int getNumericField() {
+        return this.age;
+    }
+
     @Override
     public int compareTo(Person other) {
         return Comparator.comparing((Person p) -> p.surname)

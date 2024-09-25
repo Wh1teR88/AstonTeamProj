@@ -1,40 +1,51 @@
 package Sorting;
 
+import Entity.Animal;
+import Entity.Barrel;
+import Entity.Person;
+
 import java.util.List;
-import java.util.function.Function;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class CustomSort<T extends Comparable<T>> implements SortStrategy<T> {
-    private final Function<T, Integer> numericFieldExtractor;
-
-    public CustomSort(Function<T, Integer> numericFieldExtractor) {
-        this.numericFieldExtractor = numericFieldExtractor;
-    }
+    private final InsertionSortStrategy<T> insertionSortStrategy = new InsertionSortStrategy<>();
 
     @Override
     public void sort(List<T> list) {
-        // Индексов и элементы с четными значениями
-        List<Integer> evenIndices = new ArrayList<>();
-        List<T> evenElements = new ArrayList<>();
+        List<Integer> evenIndices = new ArrayList<>(); // Четные индексы
+        List<T> evenElements = new ArrayList<>(); // Четные елементы
 
-        // Сбор четныз элементов
+        // Цикл проходит поп списку и отбирает только четные елементы
         for (int i = 0; i < list.size(); i++) {
             T element = list.get(i);
-            int numericValue = numericFieldExtractor.apply(element);
+            int numericValue = extractNumericField(element);
+
             if (numericValue % 2 == 0) {
                 evenIndices.add(i);
                 evenElements.add(element);
             }
         }
 
-        // Сортировка четныз елементов
-        Collections.sort(evenElements);
+        //Сортируем четные элементы
+        insertionSortStrategy.sort(evenElements);
 
-        // Четные элемекнты на своих местах
+        //Возвращение отсортированных чётных элементов на начальные позиции
         for (int i = 0; i < evenIndices.size(); i++) {
             int index = evenIndices.get(i);
             list.set(index, evenElements.get(i));
+        }
+    }
+
+    //Достает числовое значение из объекта, и определяет, четное или нет.
+    private int extractNumericField(T element) {
+        if (element instanceof Animal animal) {
+            return (int) animal.getWeight();
+        } else if (element instanceof Barrel barrel) {
+            return (int) barrel.getVolume();
+        } else if (element instanceof Person person) {
+            return person.getAge();
+        } else {
+            throw new IllegalArgumentException("Данный тип не поддерживается.");
         }
     }
 }

@@ -69,6 +69,10 @@ public class Barrel implements Comparable<Barrel> {
                 .compare(this, other);
     }
 
+    public double getNumericField() {
+        return this.volume;
+    }
+
     @Override
     public String toString() {
         return "Бочка " +
