@@ -1,5 +1,6 @@
 import ArrayCreation.*;
 import Entity.*;
+import Searching.BinarySearch;
 import Sorting.InsertionSortStrategy;
 import Sorting.Patterns.Strategy.SortingPlan;
 
@@ -28,6 +29,11 @@ public class Application {
             sortObjects();
             System.out.println("\nОтсортированный список " + workObject.toString());
             printList(workList);
+            System.out.println("\nБинарный поиск");
+            do {
+                performBinarySearch();
+                System.out.println("1 чтобы продолжать искать объекты, иначе начать работу с новым списком");
+            } while (scanner.nextLine().equals("1"));
         }
     }
 
@@ -42,6 +48,7 @@ public class Application {
             System.out.println("4. Выход.");
 
             int userChoice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (userChoice) {
                 case 1:
@@ -83,7 +90,6 @@ public class Application {
     }
 
     private static void sortAnimals(List<Animal> animals, SortingPlan<Animal> sortingPlan) {
-
         if (sortingPlan != null) {
             sortingPlan.sort(animals);
         } else {
@@ -114,6 +120,7 @@ public class Application {
         while (!sizeCorrect) {
             System.out.println("\nВведите размер списка (1 - 100):");
             int userInput = scanner.nextInt();
+            scanner.nextLine();
             if (userInput < 1 || userInput > 100) {
                 System.out.println("Неверный размер списка, попробуйте снова.");
             }
@@ -133,6 +140,7 @@ public class Application {
             System.out.println("4. Выход.");
 
             int userChoice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (userChoice) {
                 case 1:
@@ -168,6 +176,7 @@ public class Application {
             System.out.println("2. Custom sort");
             System.out.println("3. Выход");
             int userChoice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (userChoice) {
                 case 1:
@@ -186,6 +195,19 @@ public class Application {
             }
         }
         return sortingPlan;
+    }
+
+    private static void performBinarySearch() {
+        int index = switch (workObject) {
+            case ANIMAL -> new BinarySearch<Animal>().search((List<Animal>) workList, ManualInput.parseAnimal());
+            case BARREL -> new BinarySearch<Barrel>().search((List<Barrel>) workList, ManualInput.parseBarrel());
+            case PERSON -> new BinarySearch<Person>().search((List<Person>) workList, ManualInput.parsePerson());
+        };
+        if (index != -1) {
+            System.out.println("Найдено с индексом " + index + ": " + workList.get(index));
+        } else {
+            System.out.println("Ничего не найдено.");
+        }
     }
 
     private static <T> void printList(List<T> list) {
