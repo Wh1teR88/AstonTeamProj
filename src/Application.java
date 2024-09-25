@@ -1,5 +1,8 @@
 import ArrayCreation.*;
 import Entity.*;
+import Searching.BinarySearch;
+import Searching.SearchExecutor;
+import Sorting.CustomSort;
 import Sorting.InsertionSortStrategy;
 import Sorting.Patterns.Strategy.SortingPlan;
 
@@ -28,6 +31,7 @@ public class Application {
             sortObjects();
             System.out.println("\nОтсортированный список " + workObject.toString());
             printList(workList);
+            binarySearchOption();
         }
     }
 
@@ -74,7 +78,7 @@ public class Application {
                 sortAnimals((List<Animal>) workList, (SortingPlan<Animal>) sortingPlan);
                 break;
             case BARREL:
-                sortBarrels((List<Barrel>)workList, (SortingPlan<Barrel>) sortingPlan);
+                sortBarrels((List<Barrel>) workList, (SortingPlan<Barrel>) sortingPlan);
                 break;
             case PERSON:
                 sortPersons((List<Person>) workList, (SortingPlan<Person>) sortingPlan);
@@ -175,10 +179,9 @@ public class Application {
                     sortingPlan.setStrategy(new InsertionSortStrategy<>());
                     break;
                 case 2:
-                    //TODO см. дополнительное задание
-                    //selected = true;
-                    //sortingPlan.setStrategy(new CustomSortStrategy<>());
-                    break;
+//                    selected = true;
+//                    sortingPlan.setStrategy(new CustomSort<>));
+//                    break;
                 case 3:
                     return null;
                 default:
@@ -186,6 +189,15 @@ public class Application {
             }
         }
         return sortingPlan;
+    }
+
+    private static void binarySearchOption() {
+        System.out.println("\nХотите выполнить поиск объекта в отсортированном списке? (1 - да, 2 - нет)");
+        int userChoice = scanner.nextInt();
+        if (userChoice == 1) {
+            SearchExecutor searchExecutor = new SearchExecutor();
+            searchExecutor.performSearch(workObject, workList);
+        }
     }
 
     private static <T> void printList(List<T> list) {

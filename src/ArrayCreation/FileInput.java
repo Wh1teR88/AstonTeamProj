@@ -24,7 +24,7 @@ public class FileInput<T> implements InputManager<T> {
             String[] lineObject = new String[4];
             while ((readedLine = reader.readLine()) != null && added < length) {
                 readedLine = readedLine.trim();
-                if (readedLine.length() == 0) {
+                if (readedLine.isEmpty()) {
                     continue;
                 }
                 lineObject[index++] = readedLine;
@@ -33,15 +33,13 @@ public class FileInput<T> implements InputManager<T> {
                     animals.add(new Animal.Builder()
                             .setSpecies(lineObject[0])
                             .setEyeColor(lineObject[1])
-                            .setWool(Boolean.valueOf(lineObject[2]))
+                            .setWool(Boolean.parseBoolean(lineObject[2]))
                             .setWeight(Double.parseDouble(lineObject[3]))
                             .build());
                     added++;
                 }
             }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -57,7 +55,7 @@ public class FileInput<T> implements InputManager<T> {
             String[] lineObject = new String[3];
             while ((readedLine = reader.readLine()) != null && added < length) {
                 readedLine = readedLine.trim();
-                if (readedLine.length() == 0) {
+                if (readedLine.isEmpty()) {
                     continue;
                 }
                 lineObject[index++] = readedLine;
@@ -72,8 +70,6 @@ public class FileInput<T> implements InputManager<T> {
                 }
             }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -90,7 +86,7 @@ public class FileInput<T> implements InputManager<T> {
             String[] lineObject = new String[3];
             while ((readedLine = reader.readLine()) != null && added < length) {
                 readedLine = readedLine.trim();
-                if (readedLine.length() == 0) {
+                if (readedLine.isEmpty()) {
                     continue;
                 }
                 lineObject[index++] = readedLine;
@@ -105,8 +101,6 @@ public class FileInput<T> implements InputManager<T> {
                 }
             }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
