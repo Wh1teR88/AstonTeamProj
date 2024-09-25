@@ -47,8 +47,7 @@ public class Application {
             System.out.println("3. С людьми.");
             System.out.println("4. Выход.");
 
-            int userChoice = scanner.nextInt();
-            scanner.nextLine();
+            int userChoice = validateUserInput(scanner.nextLine());
 
             switch (userChoice) {
                 case 1:
@@ -119,13 +118,14 @@ public class Application {
         boolean sizeCorrect = false;
         while (!sizeCorrect) {
             System.out.println("\nВведите размер списка (1 - 100):");
-            int userInput = scanner.nextInt();
-            scanner.nextLine();
-            if (userInput < 1 || userInput > 100) {
+
+            int userChoice = validateUserInput(scanner.nextLine());
+
+            if (userChoice < 1 || userChoice > 100) {
                 System.out.println("Неверный размер списка, попробуйте снова.");
             }
             else {
-                arrayLength = userInput;
+                arrayLength = userChoice;
                 sizeCorrect = true;
             }
         }
@@ -139,8 +139,7 @@ public class Application {
             System.out.println("3. Случайная генерация.");
             System.out.println("4. Выход.");
 
-            int userChoice = scanner.nextInt();
-            scanner.nextLine();
+            int userChoice = validateUserInput(scanner.nextLine());
 
             switch (userChoice) {
                 case 1:
@@ -175,8 +174,8 @@ public class Application {
             System.out.println("1. Insertion sort");
             System.out.println("2. Custom sort");
             System.out.println("3. Выход");
-            int userChoice = scanner.nextInt();
-            scanner.nextLine();
+
+            int userChoice = validateUserInput(scanner.nextLine());
 
             switch (userChoice) {
                 case 1:
@@ -219,5 +218,15 @@ public class Application {
     private static void stopProgram() {
         System.out.println("Программа завершает работу...");
         System.exit(0);
+    }
+
+    private static int validateUserInput(String input){
+        int userChoice;
+        try{
+            userChoice = Integer.parseInt(input);
+        }catch (NumberFormatException e){
+            userChoice = 100;
+        }
+        return userChoice;
     }
 }
