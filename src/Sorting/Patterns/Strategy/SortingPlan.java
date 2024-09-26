@@ -8,12 +8,7 @@ public class SortingPlan<T extends Comparable<T>> {
 
     private SortStrategy<T> strategy;
 
-    public SortingPlan() {
-    }
-
-    public SortingPlan(SortStrategy<T> strategy) {
-        this.strategy = strategy;
-    }
+    public SortingPlan() {}
 
     public void setStrategy(SortStrategy<T> strategy) {
         this.strategy = strategy;

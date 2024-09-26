@@ -20,7 +20,7 @@ public class FileInput<T> implements InputManager<T> {
         ArrayList<Animal> animals = new ArrayList<>();
         String tempSpecies;
         String tempEyeColor;
-        boolean tempWool = false;
+        boolean tempWool;
         int tempWeight;
         try (BufferedReader reader = new BufferedReader(new FileReader("AnimalsInput.txt"));) {
             String readedLine;

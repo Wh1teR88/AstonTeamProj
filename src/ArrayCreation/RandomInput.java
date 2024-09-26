@@ -68,20 +68,6 @@ public class RandomInput<T> implements InputManager<T> {
         return (ArrayList<T>) arrayList;
     }
 
-//    private String randomString() {
-//        int left = 1072;
-//        int right = 1104;
-//        int length = random.nextInt(1, 15);
-//        StringBuilder buffer = new StringBuilder(length);
-//        buffer.append((char) random.nextInt(left - 32, right - 32));
-//        for (int i = 0; i < length; i++) {
-//            int randomLimitedInt = left + (int)
-//                    (random.nextFloat() * (right - left));
-//            buffer.append((char) randomLimitedInt);
-//        }
-//        return buffer.toString();
-//    }
-
     private enum AnimalSpecies{
         Млекопитающее,
         Моллюск,
