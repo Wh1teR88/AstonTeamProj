@@ -1,5 +1,6 @@
 import ArrayCreation.*;
 import Entity.*;
+import Output.ListWriter;
 import Searching.*;
 import Sorting.*;
 import Sorting.Patterns.Strategy.SortingPlan;
@@ -125,10 +126,11 @@ public class Application {
 
         while (!selected) {
             System.out.println("""
-                    \nВыберите стратегию сортировки:\
+                    \nВыберите следующее действие:\
                     \n1. Сортировка вставками\
                     \n2. Сортировка только четных значений\
-                    \n3. Выход""");
+                    \n3. Записать неотсортированный список в файл.\
+                    \n4. Выход""");
 
             int userChoice = validateUserInput(scanner.nextLine());
 
@@ -142,6 +144,9 @@ public class Application {
                     sortingPlan.setStrategy(new CustomSortStrategy<>());
                     break;
                 case 3:
+                    ListWriter.writeAll(workList);
+                    break;
+                case 4:
                     stopProgram();
                     break;
                 default:
@@ -167,6 +172,7 @@ public class Application {
     private static void sortAnimals(List<Animal> animals, SortingPlan<Animal> sortingPlan) {
         if (sortingPlan != null) {
             sortingPlan.sort(animals);
+            System.out.println("Ваш список отсортирован!");
         } else {
             System.out.println("Ошибка, метод сортировки не найден. Программа завершает работу.");
             stopProgram();
@@ -213,12 +219,12 @@ public class Application {
         sortOrFind:
         while (!selected) {
             System.out.println("""
-                    \nВаш список отсортирован!\
                     \nВыберите что делать дальше:\
-                    \n1. Найти объект в полученном списке \n(только после сортировки вставками!).\
+                    \n1. Найти объект в полученном списке.\
                     \n2. Отсортировать список другим способом.\
-                    \n3. Выбрать другой объект.\
-                    \n4. Выход.""");
+                    \n3. Записать полученный список в файл.\
+                    \n4. Выбрать другой объект.\
+                    \n5. Выход.""");
 
             int userChoice = validateUserInput(scanner.nextLine());
 
@@ -236,8 +242,11 @@ public class Application {
                     selected = true;
                     break;
                 case 3:
-                    break sortOrFind;
+                    ListWriter.writeAll(workList);
+                    break;
                 case 4:
+                    break sortOrFind;
+                case 5:
                     selected = true;
                     stopProgram();
                     break;
