@@ -3,7 +3,7 @@ package Entity;
 import java.util.Comparator;
 
 public class Barrel implements Comparable<Barrel> {
-    private final int volume;
+    private final double volume;
     private final String storedMaterial;
     private final String material;
 
@@ -14,11 +14,11 @@ public class Barrel implements Comparable<Barrel> {
     }
 
     public static class Builder {
-        private int volume;
+        private double volume;
         private String storedMaterial;
         private String material;
 
-        public Builder setVolume(int volume) {
+        public Builder setVolume(double volume) {
             this.volume = volume;
             return this;
         }
@@ -38,7 +38,7 @@ public class Barrel implements Comparable<Barrel> {
         }
     }
 
-    public int getVolume() {
+    public double getVolume() {
         return volume;
     }
 
@@ -68,13 +68,5 @@ public class Barrel implements Comparable<Barrel> {
                 "объемом " + volume +
                 " л., из материала \"" + material +
                 "\", внутри " + storedMaterial;
-    }
-
-    public String prepareToWrite(){
-        StringBuilder sbBarrel = new StringBuilder();
-        sbBarrel.append(volume + "\n");
-        sbBarrel.append(storedMaterial + "\n");
-        sbBarrel.append(material + "\n");
-        return sbBarrel.toString();
     }
 }

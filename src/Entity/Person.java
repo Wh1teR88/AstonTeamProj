@@ -65,14 +65,6 @@ public final class Person implements Comparable<Person> {
                 + age + " лет, "
                 + (gender.equals("М") ? "мужчина" : "женщина");
     }
-
-    public String prepareToWrite(){
-        StringBuilder sbPerson = new StringBuilder();
-        sbPerson.append(surname + "\n");
-        sbPerson.append(age + "\n");
-        sbPerson.append(gender + "\n");
-        return sbPerson.toString();
-    }
 }
 
 

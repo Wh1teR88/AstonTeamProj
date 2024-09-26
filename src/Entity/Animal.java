@@ -6,7 +6,7 @@ public class Animal implements Comparable<Animal> {
     private final String species; // или type, вроде переводит "вид животного -> animal species"
     private final String eyeColor;
     private final boolean wool;
-    private final int weight;
+    private final double weight;
 
     private Animal(Builder builder) {
         this.species = builder.species;
@@ -19,7 +19,7 @@ public class Animal implements Comparable<Animal> {
         private String species;
         private String eyeColor;
         private boolean wool;
-        private int weight;
+        private double weight;
 
         public Builder setSpecies(String species) {
             this.species = species;
@@ -36,7 +36,7 @@ public class Animal implements Comparable<Animal> {
             return this;
         }
 
-        public Builder setWeight(int weight) {
+        public Builder setWeight(double weight) {
             this.weight = weight;
             return this;
         }
@@ -54,7 +54,7 @@ public class Animal implements Comparable<Animal> {
         return eyeColor;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
@@ -77,14 +77,5 @@ public class Animal implements Comparable<Animal> {
                 + "\", цвет глаз \"" + eyeColor + "\", "
                 + (wool ? "есть мех" : "без меха") +
                 ", вес " + weight + " кг.";
-    }
-
-    public String prepareToWrite(){
-        StringBuilder sbAnimal = new StringBuilder();
-        sbAnimal.append(species + "\n");
-        sbAnimal.append(eyeColor + "\n");
-        sbAnimal.append(wool + "\n");
-        sbAnimal.append(weight + "\n");
-        return sbAnimal.toString();
     }
 }
