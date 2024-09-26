@@ -3,7 +3,6 @@ package Searching;
 import java.util.List;
 
 public class BinarySearch<T extends Comparable<T>> {
-    //https://stackoverflow.com/questions/5426316/generic-binary-search-java
     public int search(List<T> list, T key) {
         int low = 0;
         int high = list.size() - 1;

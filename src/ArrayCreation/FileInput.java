@@ -20,7 +20,7 @@ public class FileInput<T> implements InputManager<T> {
         ArrayList<Animal> animals = new ArrayList<>();
         String tempSpecies;
         String tempEyeColor;
-        boolean tempWool = false;
+        boolean tempWool;
         int tempWeight;
         try (BufferedReader reader = new BufferedReader(new FileReader("AnimalsInput.txt"));) {
             String readedLine;
@@ -41,11 +41,7 @@ public class FileInput<T> implements InputManager<T> {
                             || lineObject[2].equalsIgnoreCase("true")
                             || lineObject[2].equalsIgnoreCase("есть")
                             || lineObject[2].equalsIgnoreCase("yes");
-                    try {
-                        tempWeight = Integer.parseInt(lineObject[3]);
-                    } catch (NumberFormatException e) {
-                        tempWeight = -1; // -1 чтобы Валидатор не пропустил некорректное животное
-                    }
+                    tempWeight = Validate.getIntFromInput(lineObject[3]);
                     Animal tempAnimal = new Animal.Builder()
                             .setSpecies(tempSpecies)
                             .setEyeColor(tempEyeColor)
@@ -86,11 +82,7 @@ public class FileInput<T> implements InputManager<T> {
                 lineObject[index++] = readedLine;
                 if (index == 3) {
                     index = 0;
-                    try {
-                        tempVolume = Integer.parseInt(lineObject[0]);
-                    } catch (NumberFormatException e) {
-                        tempVolume = -1; // -1 чтобы Валидатор не пропустил некорректную бочку
-                    }
+                    tempVolume = Validate.getIntFromInput(lineObject[0]);
                     tempStoredMaterial = lineObject[1];
                     tempMaterial = lineObject[2];
                     Barrel tempBarrel = new Barrel.Builder()
@@ -134,11 +126,7 @@ public class FileInput<T> implements InputManager<T> {
                 if (index == 3) {
                     index = 0;
                     tempSurname = lineObject[0];
-                    try {
-                        tempAge = Integer.parseInt(lineObject[1]);
-                    } catch (NumberFormatException e) {
-                        tempAge = -1; // -1 чтобы Валидатор не пропустил некорректную бочку
-                    }
+                    tempAge = Validate.getIntFromInput(lineObject[1]);
                     if (lineObject[2].equalsIgnoreCase("м")
                             || lineObject[2].equalsIgnoreCase("муж")
                             || lineObject[2].equalsIgnoreCase("мужской")

@@ -46,17 +46,12 @@ public class Animal implements Comparable<Animal> {
         }
     }
 
-    // Геттеры
     public String getSpecies() {
         return species;
     }
 
     public String getEyeColor() {
         return eyeColor;
-    }
-
-    public boolean isWool() {
-        return wool;
     }
 
     public double getWeight() {

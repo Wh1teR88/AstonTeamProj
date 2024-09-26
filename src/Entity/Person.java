@@ -38,10 +38,6 @@ public final class Person implements Comparable<Person> {
         }
     }
 
-    public String getGender() {
-        return gender;
-    }
-
     public int getAge() {
         return age;
     }

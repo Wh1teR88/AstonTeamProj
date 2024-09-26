@@ -1,8 +1,6 @@
 package Sorting;
 
-import Entity.Animal;
-import Entity.Barrel;
-import Entity.Person;
+import Entity.*;
 
 import java.util.List;
 import java.util.ArrayList;
