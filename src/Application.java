@@ -1,10 +1,9 @@
 import ArrayCreation.*;
 import Entity.*;
-import Searching.BinarySearch;
-import Sorting.InsertionSortStrategy;
+import Searching.*;
+import Sorting.*;
 import Sorting.Patterns.Strategy.SortingPlan;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,34 +20,29 @@ public class Application {
         System.out.println("============================================");
 
         while (true) {
-            workObject = selectObjectToWork();
-            workList = chooseArrayCreator(workObject);
+            selectObjectToWork();
+            chooseArrayCreator(workObject);
             System.out.println("\nИсходный список " + workObject.toString());
             printList(workList);
-            sortingPlan = chooseSortingPlan();
+            chooseSortingPlan();
             sortObjects();
             System.out.println("\nОтсортированный список " + workObject.toString());
             printList(workList);
-            System.out.println("\nБинарный поиск");
-            do {
-                performBinarySearch();
-                System.out.println("1 чтобы продолжать искать объекты, иначе начать работу с новым списком");
-            } while (scanner.nextLine().equals("1"));
+            chooseNextStep();
         }
     }
 
-    private static ObjectType selectObjectToWork() {
+    private static void selectObjectToWork() {
         boolean selected = false;
-        ObjectType workObject = null;
         while (!selected) {
-            System.out.println("\nС чем нужно работать?");
-            System.out.println("1. С животными.");
-            System.out.println("2. С бочками.");
-            System.out.println("3. С людьми.");
-            System.out.println("4. Выход.");
+            System.out.println("""
+                    С чем нужно работать?\
+                    \n1. С животными.\
+                    \n2. С бочками.\
+                    \n3. С людьми.\
+                    \n4. Выход.""");
 
-            int userChoice = scanner.nextInt();
-            scanner.nextLine();
+            int userChoice = validateUserInput(scanner.nextLine());
 
             switch (userChoice) {
                 case 1:
@@ -71,17 +65,100 @@ public class Application {
                     System.out.println("Ошибка ввода, попробуйте еще раз.");
             }
         }
-        return workObject;
+    }
+
+    private static <T> void chooseArrayCreator(ObjectType objectType) {
+
+        int arrayLength = 1;
+        boolean sizeCorrect = false;
+        while (!sizeCorrect) {
+            System.out.println("\nВведите размер списка (1 - 100):");
+
+            int userChoice = validateUserInput(scanner.nextLine());
+
+            if (userChoice < 1 || userChoice > 100) {
+                System.out.println("Неверный размер списка, попробуйте снова.");
+            } else {
+                arrayLength = userChoice;
+                sizeCorrect = true;
+            }
+        }
+        ArrayCreator<T> arrayCreator = new ArrayCreator<>(objectType, arrayLength);
+
+        boolean selected = false;
+        while (!selected) {
+            System.out.println("""
+                    \nВыберите способ ввода данных:\
+                    \n1. Ввести самостоятельно.\
+                    \n2. Из файла.\
+                    \n3. Случайная генерация.\
+                    \n4. Выход.""");
+
+            int userChoice = validateUserInput(scanner.nextLine());
+
+            switch (userChoice) {
+                case 1:
+                    arrayCreator.setInputManager(new ManualInput<>());
+                    selected = true;
+                    break;
+                case 2:
+                    arrayCreator.setInputManager(new FileInput<>());
+                    selected = true;
+                    break;
+                case 3:
+                    arrayCreator.setInputManager(new RandomInput<>());
+                    selected = true;
+                    break;
+                case 4:
+                    stopProgram();
+                    break;
+                default:
+                    System.out.println("Ошибка ввода, попробуйте еще раз.");
+            }
+        }
+        workList = (List<? extends Comparable<?>>) arrayCreator.createArray();
+    }
+
+    private static void chooseSortingPlan() {
+
+        sortingPlan = new SortingPlan<>();
+        boolean selected = false;
+
+        while (!selected) {
+            System.out.println("""
+                    \nВыберите стратегию сортировки:\
+                    \n1. Сортировка вставками\
+                    \n2. Сортировка только четных значений\
+                    \n3. Выход""");
+
+            int userChoice = validateUserInput(scanner.nextLine());
+
+            switch (userChoice) {
+                case 1:
+                    selected = true;
+                    sortingPlan.setStrategy(new InsertionSortStrategy<>());
+                    break;
+                case 2:
+//                    selected = true;
+//                    sortingPlan.setStrategy(new CustomSortStrategy<>());
+                    System.out.println("Не реализовано");
+                    break;
+                case 3:
+                    stopProgram();
+                    break;
+                default:
+                    System.out.println("Ошибка ввода, попробуйте ещё раз.");
+            }
+        }
     }
 
     private static void sortObjects() {
-        //TODO разобраться насколько критичная ошибка, по факту мы чекаем по workObject и свитчим соответствующий каст (вероятно костыль)
         switch (workObject) {
             case ANIMAL:
                 sortAnimals((List<Animal>) workList, (SortingPlan<Animal>) sortingPlan);
                 break;
             case BARREL:
-                sortBarrels((List<Barrel>)workList, (SortingPlan<Barrel>) sortingPlan);
+                sortBarrels((List<Barrel>) workList, (SortingPlan<Barrel>) sortingPlan);
                 break;
             case PERSON:
                 sortPersons((List<Person>) workList, (SortingPlan<Person>) sortingPlan);
@@ -113,100 +190,59 @@ public class Application {
         }
     }
 
-    private static <T> ArrayList<T> chooseArrayCreator(ObjectType objectType) {
-
-        int arrayLength = 1;
-        boolean sizeCorrect = false;
-        while (!sizeCorrect) {
-            System.out.println("\nВведите размер списка (1 - 100):");
-            int userInput = scanner.nextInt();
-            scanner.nextLine();
-            if (userInput < 1 || userInput > 100) {
-                System.out.println("Неверный размер списка, попробуйте снова.");
+    private static void performBinarySearch() {
+        do {
+            int index = switch (workObject) {
+                case ANIMAL -> new BinarySearch<Animal>().search((List<Animal>) workList, ManualInput.parseAnimal());
+                case BARREL -> new BinarySearch<Barrel>().search((List<Barrel>) workList, ManualInput.parseBarrel());
+                case PERSON -> new BinarySearch<Person>().search((List<Person>) workList, ManualInput.parsePerson());
+            };
+            if (index != -1) {
+                System.out.println("\nОбъект найден!\nНаходится по индексу " + index + ": " + workList.get(index));
+            } else {
+                System.out.println("С такими параметрами ничего не найдено.");
             }
-            else {
-                arrayLength = userInput;
-                sizeCorrect = true;
-            }
-        }
-        ArrayCreator<T> arrayCreator = new ArrayCreator<>(objectType, arrayLength);
+            System.out.println("\nВведите \"1\" чтобы продолжить поиск, или любое другое значение чтобы вернуться в начало программы.");
+        } while (scanner.nextLine().equals("1"));
 
+    }
+
+    private static void chooseNextStep() {
         boolean selected = false;
+        sortOrFind:
         while (!selected) {
-            System.out.println("Выберите способ ввода данных:\n");
-            System.out.println("1. Ввести самостоятельно.");
-            System.out.println("2. Из файла.");
-            System.out.println("3. Случайная генерация.");
-            System.out.println("4. Выход.");
+            System.out.println("""
+                    \nВаш список отсортирован!\
+                    \nВыберите что делать дальше:\
+                    \n1. Найти объект в полученном списке.\
+                    \n2. Отсортировать список другим способом.\
+                    \n3. Выбрать другой объект.\
+                    \n4. Выход.""");
 
-            int userChoice = scanner.nextInt();
-            scanner.nextLine();
+            int userChoice = validateUserInput(scanner.nextLine());
 
             switch (userChoice) {
                 case 1:
-                    arrayCreator.setInputManager(new ManualInput<>());
+                    performBinarySearch();
                     selected = true;
                     break;
                 case 2:
-                    arrayCreator.setInputManager(new FileInput<>());
+                    chooseSortingPlan();
+                    sortObjects();
+                    System.out.println("\nСписок " + workObject.toString() + " заново отсортирован");
+                    printList(workList);
+                    chooseNextStep();
                     selected = true;
                     break;
                 case 3:
-                    arrayCreator.setInputManager(new RandomInput<>());
-                    selected = true;
-                    break;
+                    break sortOrFind;
                 case 4:
+                    selected = true;
                     stopProgram();
                     break;
                 default:
                     System.out.println("Ошибка ввода, попробуйте еще раз.");
             }
-        }
-        return arrayCreator.createArray();
-    }
-
-    private static <T extends Comparable<T>> SortingPlan<T> chooseSortingPlan() {
-
-        SortingPlan<T> sortingPlan = new SortingPlan<>();
-        boolean selected = false;
-
-        while (!selected) {
-            System.out.println("\nВыберите стратегию сортировки:");
-            System.out.println("1. Insertion sort");
-            System.out.println("2. Custom sort");
-            System.out.println("3. Выход");
-            int userChoice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (userChoice) {
-                case 1:
-                    selected = true;
-                    sortingPlan.setStrategy(new InsertionSortStrategy<>());
-                    break;
-                case 2:
-                    //TODO см. дополнительное задание
-                    //selected = true;
-                    //sortingPlan.setStrategy(new CustomSortStrategy<>());
-                    break;
-                case 3:
-                    return null;
-                default:
-                    System.out.println("Ошибка ввода, попробуйте ещё раз.");
-            }
-        }
-        return sortingPlan;
-    }
-
-    private static void performBinarySearch() {
-        int index = switch (workObject) {
-            case ANIMAL -> new BinarySearch<Animal>().search((List<Animal>) workList, ManualInput.parseAnimal());
-            case BARREL -> new BinarySearch<Barrel>().search((List<Barrel>) workList, ManualInput.parseBarrel());
-            case PERSON -> new BinarySearch<Person>().search((List<Person>) workList, ManualInput.parsePerson());
-        };
-        if (index != -1) {
-            System.out.println("Найдено с индексом " + index + ": " + workList.get(index));
-        } else {
-            System.out.println("Ничего не найдено.");
         }
     }
 
@@ -217,7 +253,17 @@ public class Application {
     }
 
     private static void stopProgram() {
-        System.out.println("Программа завершает работу...");
+        System.out.println("\nПрограмма завершает работу...");
         System.exit(0);
+    }
+
+    private static int validateUserInput(String input) {
+        int userChoice;
+        try {
+            userChoice = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            userChoice = 100;
+        }
+        return userChoice;
     }
 }
