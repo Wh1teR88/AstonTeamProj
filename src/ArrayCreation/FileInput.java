@@ -37,12 +37,10 @@ public class FileInput<T> implements InputManager<T> {
                     index = 0;
                     tempSpecies = lineObject[0];
                     tempEyeColor = lineObject[1];
-                    if (lineObject[2].equalsIgnoreCase("да")
+                    tempWool = lineObject[2].equalsIgnoreCase("да")
                             || lineObject[2].equalsIgnoreCase("true")
                             || lineObject[2].equalsIgnoreCase("есть")
-                            || lineObject[2].equalsIgnoreCase("yes")) {
-                        tempWool = true;
-                    }
+                            || lineObject[2].equalsIgnoreCase("yes");
                     try {
                         tempWeight = Integer.parseInt(lineObject[3]);
                     } catch (NumberFormatException e) {

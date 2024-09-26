@@ -7,7 +7,7 @@ import Entity.Person;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CustomSort<T extends Comparable<T>> implements SortStrategy<T> {
+public class CustomSortStrategy<T extends Comparable<T>> implements SortStrategy<T> {
     private final InsertionSortStrategy<T> insertionSortStrategy = new InsertionSortStrategy<>();
 
     @Override

@@ -74,13 +74,13 @@ public class ManualInput<T> implements InputManager<T> {
         String tempEyeColor;
         boolean tempWool;
         int tempWeight;
-        System.out.println("\nВведите вид животного: ");
+        System.out.println("\nВведите вид животного: (25 букв максимум)");
         tempSpecies = scanner.nextLine();
-        System.out.println("Введите цвет глаз животного: ");
+        System.out.println("Введите цвет глаз животного: (20 букв максимум)");
         tempEyeColor = scanner.nextLine();
         System.out.println("У животного есть шерсть? \"1\" - да, любая другая кнопка - нет:");
         tempWool = scanner.nextLine().equals("1");
-        System.out.println("Сколько килограммов весит животное?");
+        System.out.println("Сколько килограммов весит животное? (значение от 1 до 10000)");
         tempWeight = Integer.parseInt(scanner.nextLine());
         return new Animal.Builder()
                 .setSpecies(tempSpecies)
@@ -96,7 +96,7 @@ public class ManualInput<T> implements InputManager<T> {
         String tempMaterial;
         boolean volumeIsCorrect = false;
         while(!volumeIsCorrect) {
-            System.out.println("\nВведите объем бочки в литрах (число больше нуля): ");
+            System.out.println("\nВведите объем бочки в литрах (значение от 1 до 100000): ");
             int userInput = scanner.nextInt();
             if (userInput > 0) {
                 volumeIsCorrect = true;
@@ -106,9 +106,9 @@ public class ManualInput<T> implements InputManager<T> {
                 System.out.println("Объем бочки не может быть отрицательным, попробуйте снова.");
             }
         }
-        System.out.println("Что находится в бочке?");
+        System.out.println("Что находится в бочке? (50 букв максимум)");
         tempStoredMaterial = scanner.nextLine();
-        System.out.println("Введите материал, из которого сделана бочка:");
+        System.out.println("Введите материал, из которого сделана бочка: (50 букв максимум)");
         tempMaterial = scanner.nextLine();
         return new Barrel.Builder()
                 .setVolume(tempVolume)
@@ -120,11 +120,11 @@ public class ManualInput<T> implements InputManager<T> {
     public static Person parsePerson() {
         String tempSurname;
         int tempAge = 0;
-        String tempGender;System.out.println("\nВведите фамилию человека:");
+        String tempGender;System.out.println("\nВведите фамилию человека: (50 букв максимум)");
         tempSurname = scanner.nextLine();
         boolean ageIsCorrect = false;
         while(!ageIsCorrect) {
-            System.out.println("Сколько лет человеку? (введите положительное значение): ");
+            System.out.println("Сколько лет человеку? (значение от 1 до 120): ");
             int userInput = scanner.nextInt();
             if (userInput > 0) {
                 ageIsCorrect = true;
