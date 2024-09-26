@@ -21,25 +21,25 @@ public class Barrel implements Comparable<Barrel> {
         private String material;
 
         public Builder setVolume(double volume) {
-            if (!Validate.validatePositiveDouble(volume)) {
-                throw new IllegalArgumentException("Объем меньше нуля");
-            }
+//            if (!Validate.validatePositiveDouble(volume)) {
+//                throw new IllegalArgumentException("Объем меньше нуля");
+//            }
             this.volume = volume;
             return this;
         }
 
         public Builder setStoredMaterial(String storedMaterial) {
-            if (!Validate.validateString(storedMaterial)) {
-                throw new IllegalArgumentException("Хранимый материал пустой ");
-            }
+//            if (!Validate.validateString(storedMaterial)) {
+//                throw new IllegalArgumentException("Хранимый материал пустой ");
+//            }
             this.storedMaterial = storedMaterial;
             return this;
         }
 
         public Builder setMaterial(String material) {
-            if (!Validate.validateString(material)) {
-                throw new IllegalArgumentException("Материал бочки пустой");
-            }
+//            if (!Validate.validateString(material)) {
+//                throw new IllegalArgumentException("Материал бочки пустой");
+//            }
             this.material = material;
             return this;
         }
