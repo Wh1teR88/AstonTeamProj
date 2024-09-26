@@ -24,17 +24,17 @@ public class Animal implements Comparable<Animal> {
         private double weight;
 
         public Builder setSpecies(String species) {
-            if (!Validate.validateString(species)) {
-                throw new IllegalArgumentException("Вид пустой");
-            }
+//            if (!Validate.validateString(species)) {
+//                throw new IllegalArgumentException("Вид пустой");
+//            }
             this.species = species;
             return this;
         }
 
         public Builder setEyeColor(String eyeColor) {
-            if (!Validate.validateString(eyeColor)) {
-                throw new IllegalArgumentException("Цвет глаз пустой");
-            }
+//            if (!Validate.validateString(eyeColor)) {
+//                throw new IllegalArgumentException("Цвет глаз пустой");
+//            }
             this.eyeColor = eyeColor;
             return this;
         }
@@ -45,9 +45,9 @@ public class Animal implements Comparable<Animal> {
         }
 
         public Builder setWeight(double weight) {
-            if(!Validate.validatePositiveDouble(weight)) {
-                throw new IllegalArgumentException("Вес меньше нуля");
-            }
+//            if(!Validate.validatePositiveDouble(weight)) {
+//                throw new IllegalArgumentException("Вес меньше нуля");
+//            }
             this.weight = weight;
             return this;
         }
