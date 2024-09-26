@@ -17,6 +17,7 @@ public class Application {
 
     public static void main(String[] args) {
 
+        System.out.println("============================================");
         System.out.println("Приветствуем вас в программе для сортировки!");
         System.out.println("============================================");
 
