@@ -1,7 +1,5 @@
 package Entity;
 
-import Validating.Validate;
-
 import java.util.Comparator;
 
 public class Animal implements Comparable<Animal> {
@@ -24,17 +22,11 @@ public class Animal implements Comparable<Animal> {
         private double weight;
 
         public Builder setSpecies(String species) {
-            if (!Validate.validateString(species)) {
-                throw new IllegalArgumentException("Вид пустой");
-            }
             this.species = species;
             return this;
         }
 
         public Builder setEyeColor(String eyeColor) {
-            if (!Validate.validateString(eyeColor)) {
-                throw new IllegalArgumentException("Цвет глаз пустой");
-            }
             this.eyeColor = eyeColor;
             return this;
         }
@@ -45,9 +37,6 @@ public class Animal implements Comparable<Animal> {
         }
 
         public Builder setWeight(double weight) {
-            if(!Validate.validatePositiveDouble(weight)) {
-                throw new IllegalArgumentException("Вес меньше нуля");
-            }
             this.weight = weight;
             return this;
         }
@@ -74,10 +63,14 @@ public class Animal implements Comparable<Animal> {
         return weight;
     }
 
+    private String normalizeString(String string) {
+        return string.toLowerCase().trim().replace('ё', 'е');
+    }
+
     @Override
     public int compareTo(Animal other) {
-        return Comparator.comparing((Animal a) -> a.species)
-                .thenComparing(a -> a.eyeColor)
+        return Comparator.comparing((Animal a) -> normalizeString(a.species))
+                .thenComparing(a -> normalizeString(a.eyeColor))
                 .thenComparing(a -> a.wool)
                 .thenComparing(a -> a.weight)
                 .compare(this, other);
