@@ -36,7 +36,7 @@ public class Application {
         boolean selected = false;
         while (!selected) {
             System.out.println("""
-                    С чем нужно работать?\
+                    \nС чем нужно работать?\
                     \n1. С животными.\
                     \n2. С бочками.\
                     \n3. С людьми.\
@@ -139,9 +139,8 @@ public class Application {
                     sortingPlan.setStrategy(new InsertionSortStrategy<>());
                     break;
                 case 2:
-//                    selected = true;
-//                    sortingPlan.setStrategy(new CustomSortStrategy<>());
-                    System.out.println("Не реализовано");
+                    selected = true;
+                    sortingPlan.setStrategy(new CustomSortStrategy<>());
                     break;
                 case 3:
                     stopProgram();
@@ -170,6 +169,7 @@ public class Application {
         if (sortingPlan != null) {
             sortingPlan.sort(animals);
         } else {
+            System.out.println("Ошибка, метод сортировки не найден. Программа завершает работу.");
             stopProgram();
         }
     }
@@ -178,6 +178,7 @@ public class Application {
         if (sortingPlan != null) {
             sortingPlan.sort(barrels);
         } else {
+            System.out.println("Ошибка, метод сортировки не найден. Программа завершает работу.");
             stopProgram();
         }
     }
@@ -186,6 +187,7 @@ public class Application {
         if (sortingPlan != null) {
             sortingPlan.sort(persons);
         } else {
+            System.out.println("Ошибка, метод сортировки не найден. Программа завершает работу.");
             stopProgram();
         }
     }
