@@ -1,7 +1,5 @@
 package Entity;
 
-import Validating.Validate;
-
 import java.util.Comparator;
 
 public class Barrel implements Comparable<Barrel> {
@@ -21,25 +19,16 @@ public class Barrel implements Comparable<Barrel> {
         private String material;
 
         public Builder setVolume(double volume) {
-//            if (!Validate.validatePositiveDouble(volume)) {
-//                throw new IllegalArgumentException("Объем меньше нуля");
-//            }
             this.volume = volume;
             return this;
         }
 
         public Builder setStoredMaterial(String storedMaterial) {
-//            if (!Validate.validateString(storedMaterial)) {
-//                throw new IllegalArgumentException("Хранимый материал пустой ");
-//            }
             this.storedMaterial = storedMaterial;
             return this;
         }
 
         public Builder setMaterial(String material) {
-//            if (!Validate.validateString(material)) {
-//                throw new IllegalArgumentException("Материал бочки пустой");
-//            }
             this.material = material;
             return this;
         }
@@ -61,11 +50,15 @@ public class Barrel implements Comparable<Barrel> {
         return material;
     }
 
+    private String normalizeString(String string) {
+        return string.toLowerCase().trim().replace('ё', 'е');
+    }
+
     @Override
     public int compareTo(Barrel other) {
         return Comparator.comparing((Barrel b) -> b.volume)
-                .thenComparing(b -> b.storedMaterial)
-                .thenComparing(b -> b.material)
+                .thenComparing(b -> normalizeString(b.storedMaterial))
+                .thenComparing(b -> normalizeString(b.material))
                 .compare(this, other);
     }
 

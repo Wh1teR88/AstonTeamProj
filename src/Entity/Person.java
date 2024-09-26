@@ -1,7 +1,5 @@
 package Entity;
 
-import Validating.Validate;
-
 import java.util.Comparator;
 
 public final class Person implements Comparable<Person> {
@@ -21,25 +19,16 @@ public final class Person implements Comparable<Person> {
         private String surname;
 
         public Builder setGender(String gender) {
-//            if (!Validate.validateString(gender)) {
-//                throw new IllegalArgumentException("Пустой пол");
-//            }
             this.gender = gender;
             return this;
         }
 
         public Builder setAge(int age) {
-//            if (!Validate.validateNonNegativeInt(age)) {
-//                throw new IllegalArgumentException("Отрицательный возраст");
-//            }
             this.age = age;
             return this;
         }
 
         public Builder setSurname(String surname) {
-//            if (!Validate.validateString(surname)) {
-//                throw new IllegalArgumentException("Пустая фамилия");
-//            }
             this.surname = surname;
             return this;
         }
@@ -61,11 +50,15 @@ public final class Person implements Comparable<Person> {
         return surname;
     }
 
+    private String normalizeString(String string) {
+        return string.toLowerCase().trim().replace('ё', 'е');
+    }
+
     @Override
     public int compareTo(Person other) {
-        return Comparator.comparing((Person p) -> p.surname)
+        return Comparator.comparing((Person p) -> normalizeString(p.surname))
                 .thenComparing(p -> p.age)
-                .thenComparing(p -> p.gender)
+                .thenComparing(p -> normalizeString(p.gender))
                 .compare(this, other);
     }
 
