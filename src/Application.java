@@ -73,16 +73,15 @@ public class Application {
         boolean sizeCorrect = false;
         while (!sizeCorrect) {
             System.out.println("\nВведите размер списка (1 - 100):");
-
             int userChoice = validateUserInput(scanner.nextLine());
-
-            if (userChoice < 1 || userChoice > 100) {
-                System.out.println("Неверный размер списка, попробуйте снова.");
-            } else {
+            if (userChoice > 1 && userChoice < 100) {
                 arrayLength = userChoice;
                 sizeCorrect = true;
+            } else {
+                System.out.println("Неверный размер списка, попробуйте снова.");
             }
         }
+
         ArrayCreator<T> arrayCreator = new ArrayCreator<>(objectType, arrayLength);
 
         boolean selected = false;
@@ -264,7 +263,7 @@ public class Application {
         try {
             userChoice = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            userChoice = 100;
+            userChoice = 101;
         }
         return userChoice;
     }

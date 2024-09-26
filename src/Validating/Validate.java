@@ -34,6 +34,16 @@ public class Validate {
                 && barrel.getVolume()  <= 100000;
 
     }
+
+    public static int getIntFromInput(String input) {
+        int result;
+        try {
+            result = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            result = -1; // если спарсить не удалось, то присваиваем -1 чтобы Валидатор не пропустил некорректное животное
+        }
+        return result;
+    }
 }
 
 

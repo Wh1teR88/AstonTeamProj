@@ -81,7 +81,7 @@ public class ManualInput<T> implements InputManager<T> {
         System.out.println("У животного есть шерсть? \"1\" - да, любая другая кнопка - нет:");
         tempWool = scanner.nextLine().equals("1");
         System.out.println("Сколько килограммов весит животное? (значение от 1 до 10000)");
-        tempWeight = Integer.parseInt(scanner.nextLine());
+        tempWeight = Validate.getIntFromInput(scanner.nextLine());
         return new Animal.Builder()
                 .setSpecies(tempSpecies)
                 .setEyeColor(tempEyeColor)
@@ -91,21 +91,11 @@ public class ManualInput<T> implements InputManager<T> {
     }
 
     public static Barrel parseBarrel() {
-        int tempVolume = 0;
+        int tempVolume;
         String tempStoredMaterial;
         String tempMaterial;
-        boolean volumeIsCorrect = false;
-        while(!volumeIsCorrect) {
-            System.out.println("\nВведите объем бочки в литрах (значение от 1 до 100000): ");
-            int userInput = scanner.nextInt();
-            if (userInput > 0) {
-                volumeIsCorrect = true;
-                tempVolume = userInput;
-                scanner.nextLine(); //очистка буфера scanner! не удалять!
-            } else {
-                System.out.println("Объем бочки не может быть отрицательным, попробуйте снова.");
-            }
-        }
+        System.out.println("\nВведите объем бочки в литрах (значение от 1 до 100000): ");
+        tempVolume = Validate.getIntFromInput(scanner.nextLine());
         System.out.println("Что находится в бочке? (50 букв максимум)");
         tempStoredMaterial = scanner.nextLine();
         System.out.println("Введите материал, из которого сделана бочка: (50 букв максимум)");
@@ -119,21 +109,10 @@ public class ManualInput<T> implements InputManager<T> {
 
     public static Person parsePerson() {
         String tempSurname;
-        int tempAge = 0;
+        int tempAge;
         String tempGender;System.out.println("\nВведите фамилию человека: (50 букв максимум)");
         tempSurname = scanner.nextLine();
-        boolean ageIsCorrect = false;
-        while(!ageIsCorrect) {
-            System.out.println("Сколько лет человеку? (значение от 1 до 120): ");
-            int userInput = scanner.nextInt();
-            if (userInput > 0) {
-                ageIsCorrect = true;
-                tempAge = userInput;
-                scanner.nextLine(); //очистка буфера scanner! не удалять!
-            } else {
-                System.out.println("Возраст не может быть отрицательным, попробуйте снова.");
-            }
-        }
+        tempAge = Validate.getIntFromInput(scanner.nextLine());
         System.out.println("Если человек мужчина - введите \"1\", если женщина - введите любое другое значение");
         tempGender = scanner.nextLine().equals("1") ? "М" : "Ж";
         return new Person.Builder()
@@ -142,4 +121,5 @@ public class ManualInput<T> implements InputManager<T> {
                 .setGender(tempGender)
                 .build();
     }
+
 }
