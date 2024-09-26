@@ -1,8 +1,7 @@
 package ArrayCreation;
 
-import Entity.Animal;
-import Entity.Barrel;
-import Entity.Person;
+import Entity.*;
+import Validating.Validate;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -19,11 +18,62 @@ public class ManualInput<T> implements InputManager<T> {
         };
     }
 
+    private ArrayList<T> createAnimalArray(int length) {
+        ArrayList<Animal> animals = new ArrayList<>();
+        int added = 0;
+        while (added < length) {
+            Animal tempAnimal = ManualInput.parseAnimal();
+            if(Validate.validateAnimal(tempAnimal)){
+                animals.add(tempAnimal);
+                added++;
+                System.out.println("Добавлено животных: " + added + ". Осталось добавить: " + (length - added) + ".");
+            }
+            else {
+                System.out.println("\nНекоторые параметры из файла не соответствуют требованиям, объекты не добавлены в список.");
+            }
+        }
+        return (ArrayList<T>) animals;
+    }
+
+    private ArrayList<T> createBarrelArray(int length) {
+        ArrayList<Barrel> barrels = new ArrayList<>();
+        int added = 0;
+        while (added < length) {
+            Barrel tempBarrel = ManualInput.parseBarrel();
+            if(Validate.validateBarrel(tempBarrel)){
+                barrels.add(tempBarrel);
+                added++;
+                System.out.println("Добавлено бочек: " + added + ". Осталось добавить: " + (length - added) + ".");
+            }
+            else {
+                System.out.println("\nНекоторые параметры из файла не соответствуют требованиям, объекты не добавлены в список.");
+            }
+        }
+        return (ArrayList<T>) barrels;
+    }
+
+    private ArrayList<T> createPersonArray(int length) {
+        ArrayList<Person> persons = new ArrayList<>();
+        int added = 0;
+        while (added < length) {
+            Person tempPerson = ManualInput.parsePerson();
+            if(Validate.validatePerson(tempPerson)){
+                persons.add(tempPerson);
+                added++;
+                System.out.println("Добавлено людей: " + added + ". Осталось добавить: " + (length - added) + ".");
+            }
+            else {
+                System.out.println("\nНекоторые параметры из файла не соответствуют требованиям, объекты не добавлены в список.");
+            }
+        }
+        return (ArrayList<T>) persons;
+    }
+
     public static Animal parseAnimal() {
         String tempSpecies;
         String tempEyeColor;
         boolean tempWool;
-        double tempWeight;
+        int tempWeight;
         System.out.println("\nВведите вид животного: ");
         tempSpecies = scanner.nextLine();
         System.out.println("Введите цвет глаз животного: ");
@@ -31,7 +81,7 @@ public class ManualInput<T> implements InputManager<T> {
         System.out.println("У животного есть шерсть? \"1\" - да, любая другая кнопка - нет:");
         tempWool = scanner.nextLine().equals("1");
         System.out.println("Сколько килограммов весит животное?");
-        tempWeight = Double.parseDouble(scanner.nextLine());
+        tempWeight = Integer.parseInt(scanner.nextLine());
         return new Animal.Builder()
                 .setSpecies(tempSpecies)
                 .setEyeColor(tempEyeColor)
@@ -41,7 +91,7 @@ public class ManualInput<T> implements InputManager<T> {
     }
 
     public static Barrel parseBarrel() {
-        double tempVolume = 0.0;
+        int tempVolume = 0;
         String tempStoredMaterial;
         String tempMaterial;
         boolean volumeIsCorrect = false;
@@ -84,45 +134,12 @@ public class ManualInput<T> implements InputManager<T> {
                 System.out.println("Возраст не может быть отрицательным, попробуйте снова.");
             }
         }
-        System.out.println("Если человек мужчина - введите \"1\", если женщина - введите люое другое значение");
+        System.out.println("Если человек мужчина - введите \"1\", если женщина - введите любое другое значение");
         tempGender = scanner.nextLine().equals("1") ? "М" : "Ж";
         return new Person.Builder()
                 .setSurname(tempSurname)
                 .setAge(tempAge)
                 .setGender(tempGender)
                 .build();
-    }
-
-    private ArrayList<T> createAnimalArray(int length) {
-        ArrayList<Animal> animals = new ArrayList<>();
-        int added = 0;
-        while (added < length) {
-            animals.add(ManualInput.parseAnimal());
-            added++;
-            System.out.println("Добавлено животных: " + added + ". Осталось добавить: " + (length - added) + ".");
-        }
-        return (ArrayList<T>) animals;
-    }
-
-    private ArrayList<T> createBarrelArray(int length) {
-        ArrayList<Barrel> barrels = new ArrayList<>();
-        int added = 0;
-        while (added < length) {
-            barrels.add(ManualInput.parseBarrel());
-            added++;
-            System.out.println("Добавлено бочек: " + added + ". Осталось добавить: " + (length - added) + ".");
-        }
-        return (ArrayList<T>) barrels;
-    }
-
-    private ArrayList<T> createPersonArray(int length) {
-        ArrayList<Person> persons = new ArrayList<>();
-        int added = 0;
-        while (added < length) {
-            persons.add(ManualInput.parsePerson());
-            added++;
-            System.out.println("Добавлено людей: " + added + ". Осталось добавить: " + (length - added) + ".");
-        }
-        return (ArrayList<T>) persons;
     }
 }
