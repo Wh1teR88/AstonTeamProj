@@ -125,12 +125,12 @@ public class FileInput<T> implements InputManager<T> {
                 lineObject[index++] = readedLine;
                 if (index == 3) {
                     index = 0;
-                    tempSurname = lineObject[0];
+                    tempSurname = lineObject[2];
                     tempAge = Validate.getIntFromInput(lineObject[1]);
-                    if (lineObject[2].equalsIgnoreCase("м")
-                            || lineObject[2].equalsIgnoreCase("муж")
-                            || lineObject[2].equalsIgnoreCase("мужской")
-                            || lineObject[2].equalsIgnoreCase("мужчина")) {
+                    if (lineObject[0].equalsIgnoreCase("м")
+                            || lineObject[0].equalsIgnoreCase("муж")
+                            || lineObject[0].equalsIgnoreCase("мужской")
+                            || lineObject[0].equalsIgnoreCase("мужчина")) {
                         tempGender = "М";
                     } else tempGender = "Ж";
                     Person tempPerson = new Person.Builder()
